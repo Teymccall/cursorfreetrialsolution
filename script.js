@@ -11,9 +11,11 @@ darkModeToggle.addEventListener('change', function() {
     if (this.checked) {
         htmlElement.setAttribute('data-theme', 'dark');
         localStorage.setItem('theme', 'dark');
+        trackEvent('Interface', 'Theme_Change', 'Dark Mode', 1);
     } else {
         htmlElement.setAttribute('data-theme', 'light');
         localStorage.setItem('theme', 'light');
+        trackEvent('Interface', 'Theme_Change', 'Light Mode', 1);
     }
 });
 
@@ -66,14 +68,24 @@ function showResultPage(config) {
     const resultPage = document.getElementById('resultPage');
     const machineIdElement = document.getElementById('machineId');
     const jsonConfigElement = document.getElementById('jsonConfig');
+    const accordionJsonConfigElement = document.getElementById('accordionJsonConfig');
     
     // Save the configuration to localStorage
     localStorage.setItem('currentConfig', JSON.stringify(config));
     localStorage.setItem('currentPage', 'result');
     
+    // Format the JSON with proper indentation
+    const formattedJson = JSON.stringify(config, null, 2);
+    
     // Update the content
     machineIdElement.textContent = config["telemetry.machineId"];
-    jsonConfigElement.textContent = JSON.stringify(config, null, 4);
+    jsonConfigElement.textContent = formattedJson;
+    
+    // Update the accordion JSON configuration
+    if (accordionJsonConfigElement) {
+        accordionJsonConfigElement.textContent = formattedJson;
+        hljs.highlightElement(accordionJsonConfigElement);
+    }
     
     // Apply syntax highlighting
     hljs.highlightElement(jsonConfigElement);
@@ -82,13 +94,23 @@ function showResultPage(config) {
     mainPage.style.display = 'none';
     resultPage.style.display = 'block';
     
+    // Scroll to top smoothly
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+    
     // Re-attach download button event listener
     const downloadBtn = document.getElementById('downloadScriptBtn');
     if (downloadBtn) {
-        console.log('Reattaching download button listener');
-        downloadBtn.addEventListener('click', function(e) {
-            console.log('Download button clicked from showResultPage');
+        // Remove any existing listeners
+        downloadBtn.replaceWith(downloadBtn.cloneNode(true));
+        const newDownloadBtn = document.getElementById('downloadScriptBtn');
+        
+        // Add new listener
+        newDownloadBtn.addEventListener('click', function(e) {
             e.preventDefault();
+            console.log('Download button clicked');
             downloadScript();
         });
     }
@@ -106,11 +128,22 @@ function generateNew() {
     // Update the displayed ID and JSON
     const machineIdElement = document.getElementById('machineId');
     const jsonConfigElement = document.getElementById('jsonConfig');
+    const accordionJsonConfigElement = document.getElementById('accordionJsonConfig');
     
+    // Format the JSON with proper indentation
+    const formattedJson = JSON.stringify(config, null, 2);
+    
+    // Update all displays
     machineIdElement.textContent = config["telemetry.machineId"];
-    jsonConfigElement.textContent = JSON.stringify(config, null, 4);
+    jsonConfigElement.textContent = formattedJson;
     
-    // Apply syntax highlighting to the JSON
+    // Update the accordion JSON configuration
+    if (accordionJsonConfigElement) {
+        accordionJsonConfigElement.textContent = formattedJson;
+        hljs.highlightElement(accordionJsonConfigElement);
+    }
+    
+    // Apply syntax highlighting to the main JSON
     hljs.highlightElement(jsonConfigElement);
     
     // Save the new configuration to localStorage
@@ -120,27 +153,27 @@ function generateNew() {
     showNotification('New Machine ID generated!');
 }
 
-function copyMachineId() {
-    const machineId = document.getElementById('machineId').textContent;
-    copyToClipboard(machineId);
-}
-
-function copyJsonConfig() {
-    const jsonConfig = document.getElementById('jsonConfig').textContent;
-    copyToClipboard(jsonConfig);
-}
-
-function copyScript() {
-    const scriptContent = document.getElementById('scriptContent').textContent;
-    copyToClipboard(scriptContent.trim());
+function trackEvent(category, action, label, value = 0) {
+    gtag('event', action, {
+        'event_category': category,
+        'event_label': label,
+        'value': value,
+        'send_to': 'G-NR0QPRKZW6'
+    });
 }
 
 function downloadScript() {
-    console.log('Download function triggered');
-    // Create the PowerShell script content with proper line endings
+    // Create the PowerShell script content
     const scriptContent = [
         "# Cursor Free Trial Fix Script",
-        "# Run as Administrator",
+        "# Self-elevate the script if required",
+        "if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {",
+        "    if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {",
+        "        $CommandLine = \"-File `\"\" + $MyInvocation.MyCommand.Path + \"`\"\"",
+        "        Start-Process -FilePath PowerShell.exe -Verb RunAs -ArgumentList $CommandLine",
+        "        Exit",
+        "    }",
+        "}",
         "",
         "Write-Host \"Starting Cursor Free Trial Fix...\" -ForegroundColor Green",
         "",
@@ -202,33 +235,50 @@ function downloadScript() {
         "$null = $Host.UI.RawUI.ReadKey(\"NoEcho,IncludeKeyDown\")"
     ].join("\r\n");
 
-    try {
-        // Create blob with proper text encoding
-        const blob = new Blob([scriptContent], { 
-            type: 'application/octet-stream'
-        });
-        
-        // Create download link
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = 'fix-cursor.ps1';
-        
-        // Trigger download
-        document.body.appendChild(a);
-        a.click();
-        
-        // Clean up
-        setTimeout(() => {
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-        }, 100);
+    // Update the script content display
+    const scriptContentElement = document.getElementById('scriptContent');
+    if (scriptContentElement) {
+        scriptContentElement.textContent = scriptContent;
+        hljs.highlightElement(scriptContentElement);
+    }
 
-        showNotification('Script downloaded successfully!');
-    } catch (error) {
-        console.error('Download failed:', error);
-        showNotification('Failed to download script. Please try again.');
+    // If this was triggered by the download button, create and trigger download
+    if (event && event.target.closest('#downloadScriptBtn')) {
+        try {
+            // Create blob with text/plain MIME type
+            const blob = new Blob([scriptContent], { 
+                type: 'text/plain;charset=utf-8'
+            });
+            
+            // Create download link
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = 'fix-cursor.ps1';
+            
+            // Trigger download
+            document.body.appendChild(a);
+            a.click();
+            
+            // Clean up
+            setTimeout(() => {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 100);
+
+            showNotification('Script downloaded! Remember to unblock it in Properties before running.', 6000);
+            
+            // Track successful download
+            trackEvent('Conversion', 'Script_Download', 'PowerShell Script', 1);
+        } catch (error) {
+            console.error('Download failed:', error);
+            showNotification('Failed to download script. Please try copying it manually.', 6000);
+            trackEvent('Error', 'Download_Failed', error.message);
+        }
+    } else {
+        // Just showing the script content
+        showNotification('Script ready! Follow the instructions above to create and run the script.', 6000);
     }
 }
 
@@ -240,7 +290,7 @@ document.querySelectorAll('.accordion-header').forEach(button => {
     });
 });
 
-// Add loading animation to generate button
+// Track solution generation
 document.getElementById('generateBtn').addEventListener('click', () => {
     const btn = document.getElementById('generateBtn');
     const btnText = btn.querySelector('.btn-text');
@@ -250,6 +300,9 @@ document.getElementById('generateBtn').addEventListener('click', () => {
     btnText.style.display = 'none';
     loader.style.display = 'block';
     btn.disabled = true;
+    
+    // Track solution generation
+    trackEvent('Conversion', 'Generate_Solution', 'Solution Generated', 1);
     
     // Simulate loading (you can remove setTimeout if generation is fast)
     setTimeout(() => {
@@ -269,16 +322,32 @@ document.addEventListener('DOMContentLoaded', function() {
     const savedConfig = localStorage.getItem('currentConfig');
     
     if (savedPage === 'result' && savedConfig) {
-        // Restore the result page with saved configuration
         showResultPage(JSON.parse(savedConfig));
     }
     
-    // Attach download button event listener
+    // Initialize download button
     const downloadBtn = document.getElementById('downloadScriptBtn');
     if (downloadBtn) {
         downloadBtn.addEventListener('click', function(e) {
             e.preventDefault();
             downloadScript();
+        });
+    }
+
+    // Initialize script content display
+    const scriptContentElement = document.getElementById('scriptContent');
+    if (scriptContentElement) {
+        downloadScript(); // This will populate the script content
+    }
+
+    // Initialize generate button
+    const generateBtn = document.getElementById('generateBtn');
+    if (generateBtn) {
+        generateBtn.addEventListener('click', function() {
+            const config = generateConfiguration();
+            showResultPage(config);
+            // Re-initialize download button after showing result page
+            setTimeout(initializeDownloadButton, 100);
         });
     }
 });
@@ -295,4 +364,53 @@ function goBack() {
     resultPage.style.display = 'none';
     resultPage.classList.remove('visible');
     mainPage.style.display = 'block';
+}
+
+// Enhanced copy tracking
+function copyMachineId() {
+    const machineId = document.getElementById('machineId').textContent;
+    copyToClipboard(machineId);
+    trackEvent('Conversion', 'Copy_MachineID', 'Machine ID Copied', 1);
+}
+
+function copyJsonConfig() {
+    const jsonConfig = document.getElementById('jsonConfig').textContent;
+    copyToClipboard(jsonConfig);
+    trackEvent('Conversion', 'Copy_Config', 'JSON Config Copied', 1);
+}
+
+function copyScript() {
+    const scriptContent = document.getElementById('scriptContent').textContent;
+    const cleanedContent = scriptContent
+        .replace(/^\s+|\s+$/g, '') // Remove leading/trailing whitespace
+        .replace(/\n\s*\n/g, '\n\n') // Normalize multiple newlines
+        .replace(/\r\n/g, '\n') // Normalize line endings
+        .trim();
+        
+    copyToClipboard(cleanedContent);
+    trackEvent('Conversion', 'Copy_Script', 'PowerShell Script Copied', 1);
+    
+    // Change button text temporarily to show success
+    const copyBtn = document.querySelector('.script-header .copy-btn');
+    const btnText = copyBtn.querySelector('.btn-text');
+    const originalText = btnText.textContent;
+    btnText.textContent = 'Copied!';
+    setTimeout(() => {
+        btnText.textContent = originalText;
+    }, 2000);
+}
+
+function copyAccordionJson() {
+    const jsonConfig = document.getElementById('accordionJsonConfig').textContent;
+    copyToClipboard(jsonConfig);
+    trackEvent('Conversion', 'Copy_AccordionConfig', 'Accordion JSON Config Copied', 1);
+    
+    // Change button text temporarily to show success
+    const copyBtn = document.querySelector('.json-preview .copy-btn');
+    const btnText = copyBtn.querySelector('.btn-text');
+    const originalText = btnText.textContent;
+    btnText.textContent = 'Copied!';
+    setTimeout(() => {
+        btnText.textContent = originalText;
+    }, 2000);
 } 
