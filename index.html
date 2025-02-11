@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursor Free Trial Solution - Fix Trial Limit Issues</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Fix Cursor Editor free trial limit issues instantly. Our automated solution helps you resolve the 'Too many free trial accounts' error quickly and safely.">
+    <meta name="keywords" content="cursor editor, cursor trial fix, cursor free trial, cursor editor solution, cursor limit fix">
+    <meta name="author" content="Cursor Helper">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://your-site-url.netlify.app/">
+    <meta property="og:title" content="Cursor Free Trial Solution - Fix Trial Limit Issues">
+    <meta property="og:description" content="Fix Cursor Editor free trial limit issues instantly. Our automated solution helps you resolve the 'Too many free trial accounts' error quickly and safely.">
+    <meta property="og:image" content="https://your-site-url.netlify.app/cursor.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://your-site-url.netlify.app/">
+    <meta property="twitter:title" content="Cursor Free Trial Solution - Fix Trial Limit Issues">
+    <meta property="twitter:description" content="Fix Cursor Editor free trial limit issues instantly. Our automated solution helps you resolve the 'Too many free trial accounts' error quickly and safely.">
+    <meta property="twitter:image" content="https://your-site-url.netlify.app/cursor.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.ico">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=YOUR-GA-ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'YOUR-GA-ID');
+    </script>
+</head>
+<body>
+    <div class="theme-switch-wrapper">
+        <label class="theme-switch">
+            <input type="checkbox" id="darkModeToggle">
+            <div class="slider round"></div>
+        </label>
+        <em>Dark Mode</em>
+    </div>
+
+    <div class="notification" id="notification">
+        <span id="notificationText"></span>
+    </div>
+
+    <div class="container">
+        <div class="main-page" id="mainPage">
+            <h1>Cursor Free Trial Solution</h1>
+            
+            <div class="error-message">
+                <h2>Issue:</h2>
+                <div class="error-box">
+                    <p>"Too many free trial accounts used on this machine. Please upgrade to pro. We have this limit in place to prevent abuse. Please let us know if you believe this is a mistake."</p>
+                </div>
+                <div class="error-image">
+                    <img src="cursor.png" alt="Cursor Free Trial Error" class="error-screenshot">
+                </div>
+            </div>
+
+            <div class="solution-section">
+                <h2>Solution</h2>
+                <p>Click the button below to generate a new machine ID and see all available solutions:</p>
+                <button id="generateBtn" class="generate-btn">
+                    <span class="btn-text">Generate Solution</span>
+                    <div class="loader" style="display: none;"></div>
+                </button>
+            </div>
+        </div>
+        
+        <div class="result-page" id="resultPage" style="display: none;">
+            <div class="back-section">
+                <button class="back-btn" onclick="goBack()">
+                    <span class="back-icon">←</span>
+                    <span class="btn-text">Back to Home</span>
+                </button>
+            </div>
+            <h2>Available Solutions</h2>
+
+            <div class="solutions-container">
+                <div class="solution-card automated-solution">
+                    <h3>Option 1: Automated Solution (Windows)</h3>
+                    <p>Our PowerShell script will automatically:</p>
+                    <ul class="script-features">
+                        <li>✓ Generate a new unique Machine ID</li>
+                        <li>✓ Create a backup of your existing configuration</li>
+                        <li>✓ Update the configuration file</li>
+                        <li>✓ Handle all necessary file operations</li>
+                    </ul>
+                    <div class="download-section">
+                        <button class="download-btn" id="downloadScriptBtn" type="button">
+                            <span class="btn-text">Download Fix Script</span>
+                            <span class="download-icon">⬇️</span>
+                        </button>
+                    </div>
+                    <div class="script-instructions">
+                        <h4>How to Run:</h4>
+                        <ol>
+                            <li>Download the script above</li>
+                            <li>Right-click "fix-cursor.ps1"</li>
+                            <li>Select "Run with PowerShell"</li>
+                            <li>Click "Yes" when prompted for administrator privileges</li>
+                            <li>Wait for the script to complete</li>
+                            <li>Restart Cursor</li>
+                        </ol>
+                    </div>
+                    <div class="script-preview">
+                        <div class="script-header">
+                            <span>Script Preview</span>
+                            <button class="copy-btn" onclick="copyScript()">
+                                <span class="btn-text">Copy Script</span>
+                                <span class="copy-icon">📋</span>
+                            </button>
+                        </div>
+                        <div class="accordion">
+                            <div class="accordion-item">
+                                <button class="accordion-header">How to use this script</button>
+                                <div class="accordion-content">
+                                    <div class="usage-instructions">
+                                        <ol>
+                                            <li>Click "Copy Script" button above</li>
+                                            <li>Open PowerShell as Administrator</li>
+                                            <li>Right-click to paste the script</li>
+                                            <li>Press Enter to run</li>
+                                            <li>After script completes:
+                                                <ul>
+                                                    <li>Close PowerShell</li>
+                                                    <li>Start Cursor</li>
+                                                    <li>Log in with your temporary email account</li>
+                                                    <li>If you still see "Too many free trials" message, close Cursor completely (including from system tray) and try again</li>
+                                                </ul>
+                                            </li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <pre><code class="powershell" id="scriptContent">
+# Cursor Free Trial Fix Script
+# Self-elevate the script if required
+if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
+    if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
+        $CommandLine = "-File `"" + $MyInvocation.MyCommand.Path + "`""
+        Start-Process -FilePath PowerShell.exe -Verb RunAs -ArgumentList $CommandLine
+        Exit
+    }
+}
+
+# Execute the remote script
+try {
+    Write-Host "Downloading and executing cursor modifier script..." -ForegroundColor Green
+    $scriptUrl = "https://raw.githubusercontent.com/yuaotian/go-cursor-help/refs/heads/master/scripts/run/cursor_win_id_modifier.ps1"
+    
+    # First, download and display the script content for transparency
+    Write-Host "`nDownloading script from: $scriptUrl" -ForegroundColor Yellow
+    $scriptContent = Invoke-RestMethod -Uri $scriptUrl
+    
+    Write-Host "`nScript content for review:" -ForegroundColor Cyan
+    Write-Host "----------------------------------------"
+    Write-Host $scriptContent
+    Write-Host "----------------------------------------"
+    
+    Write-Host "`nPress Enter to execute the script, or Ctrl+C to cancel..." -ForegroundColor Yellow
+    $null = Read-Host
+    
+    # Execute the script
+    Invoke-Expression $scriptContent
+    
+} catch {
+    Write-Host "`nAn error occurred: $_" -ForegroundColor Red
+    Write-Host "The script failed to download or execute. Please check your internet connection and try again."
+}
+
+Write-Host "`nPress any key to exit..."
+$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')</code></pre>
+                    </div>
+                </div>
+
+                <div class="solution-card manual-solution">
+                    <h3>Option 2: Manual Solution</h3>
+                    <div class="generated-id-container">
+                        <h4>Your Machine ID:</h4>
+                        <code id="machineId" class="id-display"></code>
+                        <div class="button-group">
+                            <button class="copy-btn" onclick="copyMachineId()">
+                                <span class="btn-text">Copy ID</span>
+                                <span class="copy-icon">📋</span>
+                            </button>
+                            <button class="generate-btn" onclick="generateNew()">
+                                <span class="btn-text">Generate New ID</span>
+                                <span class="generate-icon">🔄</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="json-container">
+                        <h4>Configuration JSON:</h4>
+                        <pre><code class="json" id="jsonConfig"></code></pre>
+                        <button class="copy-btn" onclick="copyJsonConfig()">
+                            <span class="btn-text">Copy JSON</span>
+                            <span class="copy-icon">📋</span>
+                        </button>
+                    </div>
+
+                    <div class="instructions">
+                        <h4>Installation Steps:</h4>
+                        <div class="accordion">
+                            <div class="accordion-item">
+                                <button class="accordion-header">1. Uninstall Cursor</button>
+                                <div class="accordion-content">
+                                    <ul>
+                                        <li>Windows: Use Control Panel or Settings > Apps</li>
+                                        <li>macOS: Drag to Trash and empty</li>
+                                        <li>Linux: Use your distribution's package manager</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <button class="accordion-header">2. Delete Folders</button>
+                                <div class="accordion-content">
+                                    <h4>Windows:</h4>
+                                    <pre>C:\Users\[YourUsername]\AppData\Roaming\Cursor
+C:\Users\[YourUsername]\AppData\Local\cursor-updater
+C:\Users\[YourUsername]\AppData\Local\Programs\cursor</pre>
+                                    
+                                    <h4>macOS:</h4>
+                                    <pre>~/Library/Application Support/Cursor
+~/Library/Application Support/cursor-updater</pre>
+                                    
+                                    <h4>Linux:</h4>
+                                    <pre>~/.config/Cursor
+~/.config/cursor-updater</pre>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <button class="accordion-header">3. Install & Setup</button>
+                                <div class="accordion-content">
+                                    <ol>
+                                        <li>Install <a href="https://www.cursor.com/" target="_blank" class="download-version-link">Cursor</a></li>
+                                        <li>Create a new account using a temporary email from <a href="https://temp-mail.org/en/" target="_blank" class="temp-mail-link">temp-mail.org</a></li>
+                                        <li>Login with the temporary email account</li>
+                                        <li>When you see the "Too many free trials" message, close Cursor completely</li>
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <button class="accordion-header">4. Apply Configuration</button>
+                                <div class="accordion-content">
+                                    <ol>
+                                        <li><strong>Navigate to the configuration file:</strong>
+                                            <ul>
+                                                <li>Windows: %APPDATA%\Cursor\User\globalStorage\storage.json</li>
+                                                <li>macOS: ~/Library/Application Support/Cursor/User/globalStorage/storage.json</li>
+                                                <li>Linux: ~/.config/Cursor/User/globalStorage/storage.json</li>
+                                            </ul>
+                                        </li>
+                                        <li>Create a backup of storage.json</li>
+                                        <li>Edit storage.json and update the fields with your new key (see JSON above)</li>
+                                        <li>Save the file and restart Cursor</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="contact-section">
+            <p>Need help? Contact me at: <a href="mailto:pachumboro@gmail.com" class="email-link">pachumboro@gmail.com</a></p>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
